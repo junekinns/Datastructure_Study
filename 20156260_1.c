@@ -5,19 +5,20 @@
 #define STACK_LEN 100
 #define TRUE 1
 #define FALSE 0
+#define INF 2147483648
+//typedef, struct, Functions Declaration
 typedef int bool;
 typedef struct _intorchar {
 	int nData;
 	bool isInt;
 }IntOrChar;
-
 typedef IntOrChar Data;
-
 typedef struct _stack {
 	Data stackArr[STACK_LEN];
 	int topIdx;
 }Stack;
 
+//Functions for Stack
 void StackInit(Stack * pStack);
 bool SIsEmpty(Stack * pStack);
 void push(Stack *pStack, Data data);
@@ -25,11 +26,14 @@ Data pop(Stack * pStack);
 Data peek(Stack * pStack);
 int getOpPriority(char op);
 int priComp(char op1, char op2);
+
+//Functions for Calculator
 Data * convertToPostfix(const char copiedExp[], int * arr_size);
 int EvaluatePostExp(Data * postExp, int arr_size);
 int EvaluateInExp(const char inExp[]);
 void expError(const Data * errorExp, const int error_end_Idx, const int errorIdx, const char ch_error);
-//Stack Functions
+//typedef, struct, Functions Declaration
+
 void StackInit(Stack * pStack) {
 	pStack->topIdx = -1;
 }
@@ -66,7 +70,7 @@ Data peek(Stack * pStack) {
 int getOpPriority(char op) {
 	switch (op)
 	{
-	case '$':
+	case '$': //$는 **를 치환한 문자이다. 우선순위가 가장 높다.
 		return 4;
 	case '*':
 	case '/':
@@ -81,12 +85,12 @@ int getOpPriority(char op) {
 	return -1;
 }
 
-int priComp(char op1, char op2) {
+int priComp(char op1, char op2) { //스택에서 연산자끼리 우선순위를 비교하는 함수
 	int op1Pri = getOpPriority(op1);
 	int op2Pri = getOpPriority(op2);
 	if (op1Pri > op2Pri) return 1;
 	else if (op1Pri < op2Pri) return -1;
-	else return 0; //op1Pri == op2Pri
+	else return 0; //op1Pri == op2Pri(우선순위가 같은 경우)
 }
 
 Data * convertToPostfix(const char copiedExp[], int * arr_size) {
@@ -255,7 +259,10 @@ int EvaluatePostExp(Data * postExp, int arr_size) {
 				result.nData = num1 * num2;
 				break;
 			case '/':
-				result.nData = num1 / num2;
+				if (0 != num2)
+					result.nData = num1 / num2;
+				else if(0 == num2)
+					result.nData = INF;
 				break;
 			case '%':
 				result.nData = num1 % num2;
