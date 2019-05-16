@@ -1,26 +1,20 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #define STACK_LEN 100
 #define TRUE 1
 #define FALSE 0
-#define INF 2147483648
-#define SWAP(a, b){int t = a; a = b; b = t;}
+#define SWAP(a, b)((a) != (b) ? ((a) ^= (b), (b) ^= (a), (a) ^= (b)) : ((a), (b)))
 #define MAX(a, b)((a) > (b) ? (a) : (b))
+#define TRAIN_NUM 9
 //typedef, struct, Functions Declaration
-typedef int bool;
 typedef int Data;
 typedef struct _stack {
 	Data stackArr[STACK_LEN];
 	int topIdx;
 }Stack;
-//stack 1 is full
-int flag = 0;
-int arr[10] = { 1 };
 
 //Functions for Stack
 void StackInit(Stack * pStack);
-bool SIsEmpty(Stack * pStack);
+int SIsEmpty(Stack * pStack);
 void push(Stack *pStack, Data data);
 Data pop(Stack * pStack);
 Data peek(Stack * pStack);
@@ -30,7 +24,7 @@ void StackInit(Stack * pStack) {
 	pStack->topIdx = -1;
 }
 
-bool SIsEmpty(Stack * pStack) {
+int SIsEmpty(Stack * pStack) {
 	if (-1 == pStack->topIdx) return TRUE;
 	else return FALSE;
 }
@@ -60,25 +54,16 @@ Data peek(Stack * pStack) {
 }
 
 int main() {
-	srand(time(NULL));
-	int cnt = 0;
-	int num = 0;
-	while (cnt < 9) {
-		int random = rand() % 10;
-		if (arr[random] == 0) {
-			arr[random] = 1;
-			cnt++;
-			num = num * 10 + random;
-		}
-	}
-	printf("열차번호 : %d\n", num);
-	//열차번호 뒤집기
-	int num2 = 0;
+	int cnt, num;
+	int train_num = 0;
+	printf("열차번호 입력 : ");
+	scanf("%d", &num);
+	//편의를 위해 입력받은 num을 reverse 시켜 train_num에 대입.
 	while (num > 0) {
-		num2 = num2 * 10 + num % 10;
+		train_num = train_num * 10 + num % 10;
 		num /= 10;
 	}
-	//printf("%d",num2);
+	//printf("%d",train_num);
 
 	Stack s1, s2;
 	StackInit(&s1);
@@ -87,12 +72,12 @@ int main() {
 	int f = 1;
 	int outCnt = 0;
 	cnt = 1;
-	//인풋 다들어갈때까지는 일단 1말고는 스택1에 다넣을것임
+	//인풋 다들어갈때까지는 일단 1번 열차를 제외하고 스택1에 모두 Push
 	//k==f+1이면 스택2에 넣어둠
 	int cascade = 0;
 	for (int i = 0; i < 9; i++) {
-		int k = num2 % 10;
-		num2 /= 10;
+		int k = train_num % 10;
+		train_num /= 10;
 		printf("%02d : IN(%d)\n", cnt++, k);
 		if (k == f) {
 			printf("%02d : OUT(%d)\n", cnt++, k);

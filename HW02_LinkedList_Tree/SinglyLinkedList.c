@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "SinglyLinkedList.h"
 
 void add_last(Node * list, Data item) {
@@ -65,7 +66,7 @@ void replace(Node ** list, Node * pos, Data item) {
 
 int is_in_list(Node ** list, Data item) {
 	Node * pNode = *list;
-	while (item != pNode->data) {
+	while (0 != strcmp&& 0 !=) {
 		if (NULL == pNode) {
 			return FALSE;
 		}
