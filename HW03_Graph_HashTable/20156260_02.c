@@ -1,7 +1,6 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 #define TRUE 1
 #define FALSE 0
 //
@@ -17,7 +16,18 @@
 //단어 : apple
 //	n.사과(13) < -이진 탐색 트리를 통해 찾은 단어
 //	n.사과(6) < -해싱 테이블을 통해 찾은 단어
-//	뒤의 숫자는 이 단어를 찾기 위해 이진 탐색 트리에서 비교를 몇 번 했는지, 또는 해싱 테이블 또는 단어사전에 몇 번 접근했는지를 표시한다
+//	뒤의 숫자는 이 단어를 찾기 위해 이진 탐색 트리에서 비교를 몇 번 했는지, 또는 해싱 테이블 또는 단어사전에 몇 번 접근했는지를 표시한다.
+/*
+데이터가 있으면 각 데이터에 키가 있다. 51840개. 키는 알파벳(단어)
+1.테이블을 어떻게, 몇개 만들지? ->51840개는 있으면 컬리젼이 한번도 안발생하면 하나씩 착착 들어갈 것이고, 500개면 100번정도 충돌이 발생할 것
+해시테이블의 크기는 일반적으로 데이터의 크기보다 조금 더 크게 두는게 일반적이다(약 7만개 정도?)
+->Trade-Off:공간을 더 쓴대신, 시간을 아끼자
+충돌처리를 피할 수는 없을 것이다.(해시함수가 생각보다 잘 흐트려주지 않음) 
+2.테이블을 배열로 할까? 연결리스트로 할까?(체이닝?)
+3. 해시함수는 어떻게 만들까?
+4. 충돌이 발생하면? 오버플로우가 발생하면?
+
+*/
 typedef int Data;
 typedef struct bstNode {
 	Data data;
@@ -90,5 +100,20 @@ BstNode * searchByKey(BstNode * root, int key) {
 	return pNode;
 }
 int main() {
+	FILE * fp = NULL;
+	char word[100];
+	char wordtable[100][100];
+	fp = fopen("new_dict.txt","r");
+	if (NULL == fp) {
+		printf("File open Error!\n");
+		exit(0);
+	}
+	for (int i = 0; i < 10; i++) {
+		fgets(word, 100, fp);
+		strcpy(wordtable[i], word);
+	}
+	for (int i = 0; i < 10; i++) {
+		printf("%s\n", wordtable[i]);
+	}
 	return 0;
 }
