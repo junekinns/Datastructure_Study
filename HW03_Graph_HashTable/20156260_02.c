@@ -6,7 +6,7 @@
 #define MAX_TABLE 5 // 테이블 크기
 #define MAX_KEY 100
 #define MAX_WORD 100 
-#define NUM_OF_WORD 51840
+#define NUM_OF_WORD 46723
 int BSTSearchCount = 0;
 int HTSearchCount = 0;
 const int SIZE = 51839; //해시테이블 사이즈, 51839는 prime number
@@ -248,6 +248,7 @@ int main() {
 		HTinsert(wordTable[i].eng, wordTable[i].meaning);
 		insertBNode(&root, wordTable[i]);
 	}
+	
 	while (TRUE) {
 		BSTSearchCount = 0;
 		HTSearchCount = 0;
@@ -266,7 +267,7 @@ int main() {
 			printf("No Data Found in BST!");
 		}
 		else {
-			printf("%s(%d)", tmpBSTnode->data.meaning, BSTSearchCount);
+			printf("%s(%d) < - Word found in BST", tmpBSTnode->data.meaning, BSTSearchCount);
 		}
 		putchar('\n');
 		Node * tmpHTnode = HTsearch(inputKey);
@@ -274,7 +275,7 @@ int main() {
 			printf("No Data Found in HashTable!");
 		}
 		else {
-			printf("%s(%d)", tmpHTnode->mValue, HTSearchCount);
+			printf("%s(%d) < - Word found in HashTable", tmpHTnode->mValue, HTSearchCount);
 		}
 		putchar('\n');
 	}
